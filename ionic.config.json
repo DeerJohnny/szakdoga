@@ -1,0 +1,7 @@
+{
+  "name": "szakdoga",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

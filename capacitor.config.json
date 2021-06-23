@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "szakdoga",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}
