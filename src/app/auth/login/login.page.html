@@ -1,0 +1,16 @@
+<ion-content color="primary" padding>
+  <div class="menu">
+    <form #form="ngForm" (ngSubmit)="login(form)">
+        <p class="cim">Bejelentkezés</p>
+        <ion-item>
+          <ion-input name="email" type="email" placeholder="valami@email.com" ngModel required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input name="password" type="password" placeholder="jelszó" ngModel required></ion-input>
+        </ion-item>
+        <ion-button size="large" type="submit" [disabled]="form.invalid" expand="block">Bejelentkezés</ion-button>
+      </form>
+      <ion-button size="medium" expand="block" (click)="register()">Regisztráció</ion-button>
+      <ion-button size="medium" expand="block" (click)="vendeg()">Vendég</ion-button>
+   </div>
+</ion-content>

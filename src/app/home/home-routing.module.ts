@@ -6,6 +6,22 @@ const routes: Routes = [
   {
     path: '',
     component: HomePage,
+  },
+  {
+    path: 'first-game',
+    loadChildren: () => import('./games/first-game/first-game.module').then( m => m.FirstGamePageModule)
+  },
+  {
+    path: 'second-game',
+    loadChildren: () => import('./games/second-game/second-game.module').then( m => m.SecondGamePageModule)
+  },
+  {
+    path: 'third-game',
+    loadChildren: () => import('./games/third-game/third-game.module').then( m => m.ThirdGamePageModule)
+  },
+  {
+    path: 'first-test',
+    loadChildren: () => import('./tests/first-test/first-test.module').then( m => m.FirstTestPageModule)
   }
 ];
 
