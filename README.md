@@ -42,14 +42,14 @@ A felhasználónak lehetősége lesz világos és sötét témák között vált
 10. Dokumentálás
 
 ## Felhasználható eszközök:
-JavaScript (CreateJs, EaselJs)
-Angular 11
-Ionic 6
-npm JS
-FireBase
+* JavaScript (CreateJs, EaselJs)
+* Angular 11
+* Ionic 6
+* npm JS
+* FireBase
 
 ## Felhasználható források:
-https://angular.io/
-https://ionicframework.com/docs/v3/
-https://createjs.com/
-https://www.udemy.com/
+* https://angular.io/
+* https://ionicframework.com/docs/v3/
+* https://createjs.com/
+* https://www.udemy.com/
