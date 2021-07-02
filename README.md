@@ -1,4 +1,4 @@
-# Diplomamunka munkaterv
+# Diplomamunka
 ## Hallgatói adatok:
 ### Név: Deér Dániel
 ### Neptun kód: IOY02G
