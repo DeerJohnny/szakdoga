@@ -1,0 +1,96 @@
+div {
+  background-color: #FFFFFFFF;
+  z-index: 1;
+  position: absolute;
+  padding-left: 0.5%;
+  display: block;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  height: 99%;
+  width: 99.5%;
+}
+
+button{
+  border-radius: 8px;
+  border: 5px solid #555555;
+  background-color: white;
+  color: #555555;
+  font-size: x-large;
+  font-weight:bolder;
+  width: 15%;
+  min-width: fit-content;
+  min-height: fit-content;
+}
+
+button:hover {
+  background-color: #555555;
+  color: white;
+}
+
+#first {
+  background-image: url("/assets/images/elso.jpg");
+  background-position: center; 
+  background-repeat: no-repeat; 
+  background-size: contain; 
+  z-index: 2;
+  overflow: hidden;
+}
+
+#nextButton {
+  z-index: 99;
+  position: absolute;
+  display: block;
+  top: 85%;
+  right: 10%;
+}
+
+#backButton {
+  z-index: 99;
+  position: absolute;
+  display: block;
+  top: 85%;
+  left: 15%;
+}
+
+#startGameButton {
+  z-index: 99;
+  position: absolute;
+  display: block;
+  top: 85%;
+  right: 10%;
+}
+
+#second {
+  background-position: center; 
+  background-repeat: no-repeat; 
+  background-size:contain; 
+  background-image: url('/assets/images/masodik.jpg');
+  z-index: 2;
+  overflow: hidden;
+};
+
+#third {
+  background-position: center; 
+  background-repeat: no-repeat; 
+  background-size:contain; 
+  background-image: url('/assets/images/harmadik.jpg');
+  z-index: 2;
+  overflow: hidden;
+}
+
+#gameCanvas {
+  z-index: 2;
+  padding-top: 1%;
+}
+
+#timer {
+  z-index: 99;
+  width: 98%;
+  top: 2%;
+  position: absolute;
+  text-align: right; 
+  color: limegreen;
+  font-weight: 600;
+  font-size: xx-large;
+}

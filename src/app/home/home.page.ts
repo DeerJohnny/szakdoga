@@ -16,4 +16,8 @@ export class HomePage implements OnInit{
   firstGame(){
     this.router.navigate(['/home/first-game']);
   }
+
+  secondGame(){
+    this.router.navigate(['/home/second-game']);
+  }
 }
