@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import * as createjs from 'createjs-module';
 import { interval, Subscription } from 'rxjs';
 import { filter, tap } from "rxjs/operators";
 import { GameVariable } from '../game_vars';
 import { Output, EventEmitter, Input } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
 
 
 @Component({
@@ -18,6 +17,11 @@ import { TestBed } from '@angular/core/testing';
 })
 export class SecondGamePage implements OnInit {
 
+  @HostListener('document:keydown', ['$event'])
+    handleKeyboardEvent(event: KeyboardEvent): void {
+      this.keyDown(event);
+    }
+
   @Input() optScale: number = 1;
 
   @Output() results = new EventEmitter<{ score: number, streak: number, fastest: number, average: number, when: Date }>();
@@ -29,7 +33,7 @@ export class SecondGamePage implements OnInit {
   grayNumCircle: any;
   szamok: any;
   formak: any;
-  alsok: any;
+  keys: any;
   numCircle: any;
   keret: any;
   circle: any;
@@ -56,6 +60,7 @@ export class SecondGamePage implements OnInit {
   elso: any;
   stage: any;
   when: Date;
+  canvas: any;
 
   ngOnInit() {
     this.divHeigth = this.optScale * 98;
@@ -66,16 +71,12 @@ export class SecondGamePage implements OnInit {
     this.tutorialVisible1 = true;
     this.tutorialVisible2 = false;
     this.tutorialVisible3 = false;
-    window.addEventListener("keypress", async function(event){
-      await this.test()
-    })
    
   }
 
-  async test(event){
-
-    console.log(event);
-    }
+  keyDown(event: any) {
+    if (this.keys) this.helyes(event.key);
+  }
 
   firstTut() {
     this.tutorialVisible1 = true;
@@ -95,6 +96,61 @@ export class SecondGamePage implements OnInit {
     this.tutorialVisible3 = true;
   }
 
+  helyes(key){
+    console.log(key);
+    console.log(this.stage.getChildAt(this.celpont).key);
+    let scale = window.innerWidth / this.startScreenWidth;
+    if (scale > window.innerWidth / this.gameVars.standardScreenWidth) scale = window.innerWidth / this.gameVars.standardScreenWidth;
+
+    if (this.started === 0){
+      this.startGame();
+      this.started = 1;
+    }
+    
+
+    if (this.stage.getChildAt(this.celpont).key === key) {
+
+      createjs.Ticker.paused = true;
+      this.tempTime = createjs.Ticker.getTime() - this.beforeTime;
+      this.beforeTime = createjs.Ticker.getTime();
+
+      this.stage.getChildAt(this.celpont+2).visible = false;
+      this.stage.getChildAt(this.celpont-1).visible = false;
+      this.stage.getChildAt(this.celpont).visible = true;
+      this.stage.getChildAt(this.celpont+1).visible = true;
+
+      this.score++;
+
+      this.playAudio(0);
+
+      this.createForm();
+      this.moveNumber();
+
+      this.streak++;
+
+      if (this.maxStreak < this.streak) {
+        this.maxStreak = this.streak;
+      }
+      if (this.tempTime < this.fastest && this.db > 1) {
+        this.fastest = this.tempTime;
+
+      }
+      this.average += this.tempTime;
+      this.db++;
+    } else {
+      this.playAudio(1);
+      if (this.maxStreak < this.streak) {
+        this.maxStreak = this.streak;
+      }
+      this.streak = 0;
+    }
+    createjs.Ticker.paused = false;
+    if (this.score > 0) {
+      this.stage.getChildAt(this.celpont - 2).scaleX = scale * this.gameVars.s_scale;
+      this.stage.getChildAt(this.celpont - 2).scaleY = scale * this.gameVars.s_scale;
+    }
+  }
+
 
   loadGame() {
 
@@ -110,7 +166,8 @@ export class SecondGamePage implements OnInit {
     if (scale > window.innerWidth / this.gameVars.standardScreenWidth) scale = window.innerWidth / this.gameVars.standardScreenWidth;
 
     this.formak = this.loadImage(['s_circleCircle.png', 's_circleHaromszog.png', 's_circleNegyzet.png', 's_circleOtszog.png', 's_circleHatszog.png', 's_circleX.png']);
-    this.circle = this.loadImage(['circle.png']);
+    this.circle = this.loadImage(['circleQuest.png']);
+    this.keys = ['q', 'w', 'e', 'r', 't', 'z'];
 
     this.shuffle(this.formak);
     console.log(this.formak);
@@ -119,67 +176,6 @@ export class SecondGamePage implements OnInit {
     createjs.Ticker.addEventListener("tick", this.stage);
 
     this.start();
-
-    const helyes = (evt: { currentTarget: { id: any; }; }) => {
-      let scale = window.innerWidth / this.startScreenWidth;
-      if (scale > window.innerWidth / this.gameVars.standardScreenWidth) scale = window.innerWidth / this.gameVars.standardScreenWidth;
-
-      if (this.started == 0) this.startGame();
-      this.started = 1;
-
-      if (this.stage.getChildAt(this.celpont).id == evt.currentTarget.id) {
-
-        createjs.Ticker.paused = true;
-        this.tempTime = createjs.Ticker.getTime() - this.beforeTime;
-        this.beforeTime = createjs.Ticker.getTime();
-
-        this.stage.getChildAt(this.celpont).visible = true;
-        this.stage.getChildAt(this.celpont - 2).visible = false;
-
-        this.score++;
-
-        this.playAudio(0);
-
-        this.stage.getChildAt(this.celpont).filters = [
-          new createjs.ColorFilter(1, 1, 1, 1, 0, 255, 0, 0)
-        ];
-        this.stage.getChildAt(this.celpont).cache(0, 0, 200, 200);
-
-        setTimeout(async () => (this.resetFilter(this.celpont)), 200);
-
-        this.createForm();
-        this.moveNumber();
-
-        this.streak++;
-
-        if (this.maxStreak < this.streak) {
-          this.maxStreak = this.streak;
-        }
-        if (this.tempTime < this.fastest && this.db > 1) {
-          this.fastest = this.tempTime;
-
-        }
-        this.average += this.tempTime;
-        this.db++;
-      } else {
-        this.playAudio(1);
-        if (this.maxStreak < this.streak) {
-          this.maxStreak = this.streak;
-        }
-        this.streak = 0;
-        this.stage.getChildAt(this.celpont - 2).filters = [
-          new createjs.ColorFilter(0, 0, 0, 1, 255, 0, 0, 0)
-        ];
-        this.stage.getChildAt(this.celpont - 2).cache(0, 0, 200, 200);
-
-        setTimeout(async () => (this.resetFilter(this.celpont)), 200);
-      }
-      createjs.Ticker.paused = false;
-      if (this.score > 0) {
-        this.stage.getChildAt(this.celpont - 4).scaleX = scale * this.gameVars.s_scale;
-        this.stage.getChildAt(this.celpont - 4).scaleY = scale * this.gameVars.s_scale;
-      }
-    }
 
   }
 
@@ -199,20 +195,10 @@ export class SecondGamePage implements OnInit {
 
   async resetFilter(id: number) {
 
-    this.stage.getChildAt(id - 1).filters = [
+    this.stage.getChildAt(id).filters = [
       new createjs.ColorFilter(0, 0, 0, 1, 50, 205, 50, 0)
     ];
-    this.stage.getChildAt(id - 1).cache(0, 0, 200, 200);
-
-    this.stage.getChildAt(id - 2).filters = [
-      new createjs.ColorFilter(0, 0, 0, 1, 50, 205, 50, 0)
-    ];
-    this.stage.getChildAt(id - 2).cache(0, 0, 200, 200);
-    
-    this.stage.getChildAt(id - 3).filters = [
-      new createjs.ColorFilter(1, 1, 1, 1, 0, 0, 0, 0)
-    ];
-    this.stage.getChildAt(id - 3).cache(0, 0, 200, 200);
+    this.stage.getChildAt(id).cache(0, 0, 200, 200);
   }
 
   playAudio(id: number) {
@@ -251,7 +237,7 @@ export class SecondGamePage implements OnInit {
     this.fastest /= 1000;
 
     this.results.emit({ score: this.score, streak: this.streak, fastest: this.fastest, average: this.average, when: this.when });
-
+    console.log({ score: this.score, streak: this.streak, fastest: this.fastest, average: this.average, when: this.when });
     this.timeLeftString = "";
     this.stage.removeAllChildren();
     this.stage = null;
@@ -289,7 +275,7 @@ export class SecondGamePage implements OnInit {
     kor[0] = this.circle[0].clone();
 
     forma[0] = this.formak[rand].clone();
-    forma[0].id = this.formak[rand].id;
+    forma[0].key = this.keys[rand];
     forma[0].x = window.innerWidth - window.innerWidth * (1 - (0 + 1) / 7);
     forma[0].y = window.innerHeight / this.gameVars.s_formaPos * this.optScale;
     forma[0].scaleX = newScale * this.gameVars.s_scale;
@@ -318,14 +304,14 @@ export class SecondGamePage implements OnInit {
       kor[db] = this.circle[0].clone();
 
       forma[db] = this.formak[rand].clone();
-      forma[db].id = this.formak[rand].id;
-      forma[db].x = window.innerWidth - window.innerWidth * (1 - (db + 1) / 7);
+      forma[db].key = this.keys[rand];
+      forma[db].x = window.innerWidth - window.innerWidth * (1 - (db + 1) / 6);
       forma[db].y = window.innerHeight / this.gameVars.s_formaPos * this.optScale;
       forma[db].scaleX = newScale * this.gameVars.s_scale;
       forma[db].scaleY = newScale * this.gameVars.s_scale;
       forma[db].name = "forma";
 
-      kor[db].x = window.innerWidth - window.innerWidth * (1 - (db + 1) / 7);
+      kor[db].x = window.innerWidth - window.innerWidth * (1 - (db + 1) / 6);
       kor[db].y = window.innerHeight / this.gameVars.s_formaPos * this.optScale;
       kor[db].scaleX = newScale * this.gameVars.s_scale;
       kor[db].scaleY = newScale * this.gameVars.s_scale;
@@ -341,13 +327,10 @@ export class SecondGamePage implements OnInit {
       this.poz++;
     }
     this.stage.update();
-    this.celpont = this.first + 2;
+    this.celpont = this.first + 1;
 
-    this.stage.getChildAt(this.celpont - 1).scaleX = newScale * this.gameVars.s_scale * 1.2;
-    this.stage.getChildAt(this.celpont - 1).scaleY = newScale * this.gameVars.s_scale * 1.2;
-
-    this.stage.getChildAt(this.celpont - 2).scaleX = newScale * this.gameVars.s_scale * 1.2;
-    this.stage.getChildAt(this.celpont - 2).scaleY = newScale * this.gameVars.s_scale * 1.2;
+    this.stage.getChildAt(this.celpont-1).scaleX = newScale * this.gameVars.s_scale * 1.2;
+    this.stage.getChildAt(this.celpont-1).scaleY = newScale * this.gameVars.s_scale * 1.2;
   }
 
   createForm() {
@@ -360,7 +343,7 @@ export class SecondGamePage implements OnInit {
     if (newScale > window.innerWidth / this.gameVars.standardScreenWidth) newScale = window.innerWidth / this.gameVars.standardScreenWidth;
 
     forma = this.formak[rand].clone();
-    forma.id = this.formak[rand].id;
+    forma.key = this.keys[rand];
     forma.x = window.innerWidth;
     forma.y = window.innerHeight / this.gameVars.s_formaPos * this.optScale;
     forma.scaleX = newScale * this.gameVars.s_scale;
@@ -373,25 +356,18 @@ export class SecondGamePage implements OnInit {
     kor.scaleY = newScale * this.gameVars.s_scale;
     kor.name = "kor";
 
-    kor.filters = [
-      new createjs.ColorFilter(0, 0, 0, 1, 170, 170, 170, 0)
-    ];
-    kor.cache(0, 0, 200, 200);
-
     this.stage.addChildAt(kor, this.first + this.poz - this.removedCount);
+    this.stage.getChildAt(this.first + this.poz - this.removedCount).visible = false;
     this.poz++;
 
     this.stage.addChildAt(forma, this.first + this.poz - this.removedCount);
-    this.stage.getChildAt(this.first + this.poz - this.removedCount).visible = false;
+    this.stage.getChildAt(this.first + this.poz - this.removedCount).visible = true;
 
-    this.celpont = this.first + this.poz - this.removedCount - 12;
+    this.celpont = this.first + this.poz - this.removedCount - 10;
     this.poz++;
 
-    this.stage.getChildAt(this.celpont - 1).scaleX = newScale * this.gameVars.s_scale * 1.2;
-    this.stage.getChildAt(this.celpont - 1).scaleY = newScale * this.gameVars.s_scale * 1.2;
-
-    this.stage.getChildAt(this.celpont - 2).scaleX = newScale * this.gameVars.s_scale * 1.2;
-    this.stage.getChildAt(this.celpont - 2).scaleY = newScale * this.gameVars.s_scale * 1.2;
+    this.stage.getChildAt(this.celpont-1).scaleX = newScale * this.gameVars.s_scale * 1.2;
+    this.stage.getChildAt(this.celpont-1).scaleY = newScale * this.gameVars.s_scale * 1.2;
 
   }
 

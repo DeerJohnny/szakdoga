@@ -1,20 +1,19 @@
-<ion-content (keypress)="test(event)">
+<ion-content>
     <div [style.height.vh]="divHeigth">
-    <div id="first" *ngIf="tutorialVisible1">
-        <button id="nextButton" mat-raised-button (click)="secondTut()">Következő</button>
-    </div>
-    <div id="second" *ngIf="tutorialVisible2">
-        <button id="backButton" mat-raised-button (click)="firstTut()">Vissza</button>
-        <button id="nextButton" mat-raised-button (click)="thirdTut()">Következő</button>
-    </div>
-    <div id="third" *ngIf="tutorialVisible3">
-        <button id="backButton" mat-raised-button (click)="secondTut()">Vissza</button>
-        <button id="startGameButton" mat-raised-button (click)="loadGame()">Start</button>
-    </div>
-    <div id="game" >
-        <ion-input ionInput></ion-input>
-        <p id="timer">{{timeLeftString}}</p>
-        <canvas id="gameCanvas" ></canvas>
-    </div>
+        <div id="first" *ngIf="tutorialVisible1">
+            <button id="nextButton" mat-raised-button (click)="secondTut()">Következő</button>
+        </div>
+        <div id="second" *ngIf="tutorialVisible2">
+            <button id="backButton" mat-raised-button (click)="firstTut()">Vissza</button>
+            <button id="nextButton" mat-raised-button (click)="thirdTut()">Következő</button>
+        </div>
+        <div id="third" *ngIf="tutorialVisible3">
+            <button id="backButton" mat-raised-button (click)="secondTut()">Vissza</button>
+            <button id="startGameButton" mat-raised-button (click)="loadGame()">Start</button>
+        </div>
+        <div id="game" >
+            <p id="timer">{{timeLeftString}}</p>
+            <canvas id="gameCanvas" ></canvas>
+        </div>
     </div>
 </ion-content>
