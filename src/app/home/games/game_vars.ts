@@ -30,6 +30,7 @@ export class GameVariable{
         "y": 0.07
     }]
 //second
+    public s_keyPos = 3.5;
     public s_formaPos = 2.5;
     public s_scale = 0.5;
 }

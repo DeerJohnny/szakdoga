@@ -29,7 +29,7 @@ button:hover {
 }
 
 #first {
-  background-image: url("/assets/images/elso.jpg");
+  background-image: url("/assets/images/2_masodik.png");
   background-position: center; 
   background-repeat: no-repeat; 
   background-size: contain; 
@@ -65,7 +65,7 @@ button:hover {
   background-position: center; 
   background-repeat: no-repeat; 
   background-size:contain; 
-  background-image: url('/assets/images/masodik.jpg');
+  background-image: url('/assets/images/2_harmadik.png');
   z-index: 2;
   overflow: hidden;
 };
@@ -74,7 +74,12 @@ button:hover {
   background-position: center; 
   background-repeat: no-repeat; 
   background-size:contain; 
-  background-image: url('/assets/images/harmadik.jpg');
+  background-image: url('/assets/images/2_elso.png');
+  z-index: 2;
+  overflow: hidden;
+}
+
+#memo {
   z-index: 2;
   overflow: hidden;
 }

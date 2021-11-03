@@ -33,6 +33,7 @@ export class SecondGamePage implements OnInit {
   grayNumCircle: any;
   szamok: any;
   formak: any;
+  keyPics: any;
   keys: any;
   numCircle: any;
   keret: any;
@@ -41,13 +42,14 @@ export class SecondGamePage implements OnInit {
   tutorialVisible1: Boolean;
   tutorialVisible2: Boolean;
   tutorialVisible3: Boolean;
+  memorizeVisible: Boolean;
   tempTime: any;
   beforeTime: any;
   fastest: any;
   average: any;
   db: any;
   before = window.innerWidth;
-  started: any;
+  started: Boolean;
   score: any;
   streak: any;
   maxStreak: any;
@@ -60,9 +62,12 @@ export class SecondGamePage implements OnInit {
   elso: any;
   stage: any;
   when: Date;
-  canvas: any;
+  help: Boolean;
+  stepper: any;
+  space: Boolean;
 
   ngOnInit() {
+    this.space = false;
     this.divHeigth = this.optScale * 98;
     this.stage = new createjs.Stage("gameCanvas");
     this.stage.canvas.width = window.innerWidth;
@@ -71,60 +76,90 @@ export class SecondGamePage implements OnInit {
     this.tutorialVisible1 = true;
     this.tutorialVisible2 = false;
     this.tutorialVisible3 = false;
+    this.memorizeVisible = false;
    
   }
 
   keyDown(event: any) {
-    if (this.keys) this.helyes(event.key);
+    if (this.space) {
+      if (this.keys) this.helyes(event.key);
+    } else if(event.code === "Space") {
+      this.start();
+      this.space = true;
+    }
   }
 
   firstTut() {
     this.tutorialVisible1 = true;
     this.tutorialVisible2 = false;
     this.tutorialVisible3 = false;
+    this.memorizeVisible = false;
   }
 
   secondTut() {
     this.tutorialVisible1 = false;
     this.tutorialVisible2 = true;
     this.tutorialVisible3 = false;
+    this.memorizeVisible = false;
   }
 
   thirdTut() {
     this.tutorialVisible1 = false;
     this.tutorialVisible2 = false;
     this.tutorialVisible3 = true;
+    this.memorizeVisible = false;
+  }
+
+  memorize() {
+    this.tutorialVisible1 = false;
+    this.tutorialVisible2 = false;
+    this.tutorialVisible3 = false;
+    this.memorizeVisible = true;
+    this.loadGame();
+  }
+
+  tasks() {
+    this.stage.getChildAt(this.celpont+3).visible = false;
+    this.stage.getChildAt(this.celpont+4).visible = false;
+    this.stage.getChildAt(this.celpont-1).visible = false;
+    this.stage.getChildAt(this.celpont).visible = true;
+    this.stage.getChildAt(this.celpont+2).visible = true;
+    this.moveNumber();
+    this.createForm();
   }
 
   helyes(key){
-    console.log(key);
-    console.log(this.stage.getChildAt(this.celpont).key);
     let scale = window.innerWidth / this.startScreenWidth;
     if (scale > window.innerWidth / this.gameVars.standardScreenWidth) scale = window.innerWidth / this.gameVars.standardScreenWidth;
 
-    if (this.started === 0){
+    if (this.started === false){
+      this.createForm();
       this.startGame();
-      this.started = 1;
+      this.started = true;
+      this.stepper = setInterval( () => {
+        this.tasks();
+      }, 2000);
     }
     
-
     if (this.stage.getChildAt(this.celpont).key === key) {
-
+      clearInterval(this.stepper);
       createjs.Ticker.paused = true;
       this.tempTime = createjs.Ticker.getTime() - this.beforeTime;
       this.beforeTime = createjs.Ticker.getTime();
-
-      this.stage.getChildAt(this.celpont+2).visible = false;
-      this.stage.getChildAt(this.celpont-1).visible = false;
-      this.stage.getChildAt(this.celpont).visible = true;
-      this.stage.getChildAt(this.celpont+1).visible = true;
-
+      
       this.score++;
 
-      this.playAudio(0);
+      if (this.score === 1) {
+        this.stage.getChildAt(this.celpont+1).visible = false;
+        this.stage.getChildAt(this.celpont).scaleX*=1/1.2;
+        this.stage.getChildAt(this.celpont).scaleY*=1/1.2;
+      }
 
-      this.createForm();
-      this.moveNumber();
+      this.tasks();
+
+      if (this.score > 12) this.help = false;
+
+      this.playAudio(0);
 
       this.streak++;
 
@@ -133,10 +168,13 @@ export class SecondGamePage implements OnInit {
       }
       if (this.tempTime < this.fastest && this.db > 1) {
         this.fastest = this.tempTime;
-
       }
       this.average += this.tempTime;
       this.db++;
+
+      this.stepper = setInterval( () => {
+        this.tasks();
+      }, 2000);
     } else {
       this.playAudio(1);
       if (this.maxStreak < this.streak) {
@@ -145,16 +183,11 @@ export class SecondGamePage implements OnInit {
       this.streak = 0;
     }
     createjs.Ticker.paused = false;
-    if (this.score > 0) {
-      this.stage.getChildAt(this.celpont - 2).scaleX = scale * this.gameVars.s_scale;
-      this.stage.getChildAt(this.celpont - 2).scaleY = scale * this.gameVars.s_scale;
-    }
+
   }
 
 
   loadGame() {
-
-    this.tutorialVisible3 = false;
     this.canvasVisible = true;
   
     const actDate = new Date();
@@ -167,16 +200,51 @@ export class SecondGamePage implements OnInit {
 
     this.formak = this.loadImage(['s_circleCircle.png', 's_circleHaromszog.png', 's_circleNegyzet.png', 's_circleOtszog.png', 's_circleHatszog.png', 's_circleX.png']);
     this.circle = this.loadImage(['circleQuest.png']);
+    this.keyPics = this.loadImage(['Q_key.png', 'W_key.png', 'E_key.png', 'R_key.png', 'T_key.png', 'Z_key.png']);
     this.keys = ['q', 'w', 'e', 'r', 't', 'z'];
 
     this.shuffle(this.formak);
-    console.log(this.formak);
 
     createjs.Ticker.setFPS(60);
     createjs.Ticker.addEventListener("tick", this.stage);
+    this.help = true;
 
-    this.start();
+    this.memoTable();
 
+  }
+
+  memoTable() {
+    
+    let forma = [];
+    let keyImg = [];
+    this.poz = 0;
+    let newScale = window.innerWidth / this.startScreenWidth;
+    if (newScale > window.innerWidth / this.gameVars.standardScreenWidth) newScale = window.innerWidth / this.gameVars.standardScreenWidth;
+
+    for (let db = 0; db < 6; db++) {
+
+      forma[db] = this.formak[db].clone();
+      forma[db].x = window.innerWidth / 9 * (db+1.5);
+      forma[db].y = window.innerHeight / this.gameVars.s_formaPos * this.optScale;
+      forma[db].scaleX = newScale * this.gameVars.s_scale;
+      forma[db].scaleY = newScale * this.gameVars.s_scale;
+      forma[db].name = "forma";
+
+      keyImg[db] = this.keyPics[db].clone();
+      keyImg[db].x = window.innerWidth / 9 * (db+1.5) + (100*0.17);
+      keyImg[db].y = window.innerHeight / this.gameVars.s_keyPos * this.optScale;
+      keyImg[db].scaleX = newScale * this.gameVars.s_scale * 0.7;
+      keyImg[db].scaleY = newScale * this.gameVars.s_scale * 0.7;
+      keyImg[db].name = "keyPic";
+
+      this.stage.addChildAt(forma[db], this.poz);
+      this.stage.getChildAt(this.poz).visible = true;
+      this.poz++;
+      
+      this.stage.addChildAt(keyImg[db], this.poz);
+      this.stage.getChildAt(this.poz).visible = true;
+      this.poz++;
+    }
   }
 
   loadImage(names: string[]) {
@@ -193,14 +261,6 @@ export class SecondGamePage implements OnInit {
     array.sort(() => Math.random() - 0.5);
   }
 
-  async resetFilter(id: number) {
-
-    this.stage.getChildAt(id).filters = [
-      new createjs.ColorFilter(0, 0, 0, 1, 50, 205, 50, 0)
-    ];
-    this.stage.getChildAt(id).cache(0, 0, 200, 200);
-  }
-
   playAudio(id: number) {
 
     var sound = ["assets/sound/correct.wav",
@@ -215,7 +275,7 @@ export class SecondGamePage implements OnInit {
   }
 
   start() {
-    this.tutorialVisible3 = false;
+    this.memorizeVisible = false;
     this.canvasVisible = true;
     this.timeLeft = this.gameVars.timeLeft;
     this.timeLeftString = this.gameVars.timeLeftString;
@@ -225,9 +285,10 @@ export class SecondGamePage implements OnInit {
     this.poz = 0;
     this.removedCount = 0;
     this.score = 0;
-    this.started = 0;
+    this.started = false;
     this.fastest = Number.MAX_SAFE_INTEGER;
     this.average = 0;
+    this.stage.removeAllChildren();
     this.first = this.stage.getNumChildren();
     this.createStart();
   }
@@ -265,9 +326,10 @@ export class SecondGamePage implements OnInit {
 
   createStart() {
     let forma = [];
-    let rand = Math.floor(Math.random() * 6);
-
     let kor = [];
+    let keyImg = [];
+
+    let rand = Math.floor(Math.random() * 6);
 
     let newScale = window.innerWidth / this.startScreenWidth;
     if (newScale > window.innerWidth / this.gameVars.standardScreenWidth) newScale = window.innerWidth / this.gameVars.standardScreenWidth;
@@ -276,17 +338,25 @@ export class SecondGamePage implements OnInit {
 
     forma[0] = this.formak[rand].clone();
     forma[0].key = this.keys[rand];
-    forma[0].x = window.innerWidth - window.innerWidth * (1 - (0 + 1) / 7);
+    forma[0].x = window.innerWidth / 6 * 2;
     forma[0].y = window.innerHeight / this.gameVars.s_formaPos * this.optScale;
     forma[0].scaleX = newScale * this.gameVars.s_scale;
     forma[0].scaleY = newScale * this.gameVars.s_scale;
     forma[0].name = "forma";
 
-    kor[0].x = window.innerWidth - window.innerWidth * (1 - (0 + 1) / 7);
+    kor[0].x = window.innerWidth / 6 * 2;
     kor[0].y = window.innerHeight / this.gameVars.s_formaPos * this.optScale;
     kor[0].scaleX = newScale * this.gameVars.s_scale;
     kor[0].scaleY = newScale * this.gameVars.s_scale;
     kor[0].name = "kor";
+
+    keyImg[0] = this.keyPics[rand].clone();
+    keyImg[0].key = this.keys[rand];
+    keyImg[0].x = window.innerWidth / 6 * 2 + (100*0.17*1.2);
+    keyImg[0].y = window.innerHeight / this.gameVars.s_keyPos * this.optScale;
+    keyImg[0].scaleX = newScale * this.gameVars.s_scale * 0.7;
+    keyImg[0].scaleY = newScale * this.gameVars.s_scale * 0.7;
+    keyImg[0].name = "keyPic";
 
 
     this.stage.addChildAt(kor[0], this.first + this.poz);
@@ -297,7 +367,11 @@ export class SecondGamePage implements OnInit {
     this.stage.getChildAt(this.first + this.poz).visible = true;
     this.poz++;
 
-    for (let db = 1; db < 6; db++) {
+    this.stage.addChildAt(keyImg[0], this.first + this.poz);
+    this.stage.getChildAt(this.first + this.poz).visible = true;
+    this.poz++;
+
+    for (let db = 1; db < 4; db++) {
 
       rand = Math.floor(Math.random() * 6);
 
@@ -305,17 +379,25 @@ export class SecondGamePage implements OnInit {
 
       forma[db] = this.formak[rand].clone();
       forma[db].key = this.keys[rand];
-      forma[db].x = window.innerWidth - window.innerWidth * (1 - (db + 1) / 6);
+      forma[db].x = window.innerWidth / 6 * (db + 2);
       forma[db].y = window.innerHeight / this.gameVars.s_formaPos * this.optScale;
       forma[db].scaleX = newScale * this.gameVars.s_scale;
       forma[db].scaleY = newScale * this.gameVars.s_scale;
       forma[db].name = "forma";
 
-      kor[db].x = window.innerWidth - window.innerWidth * (1 - (db + 1) / 6);
+      kor[db].x = window.innerWidth / 6 * (db + 2);
       kor[db].y = window.innerHeight / this.gameVars.s_formaPos * this.optScale;
       kor[db].scaleX = newScale * this.gameVars.s_scale;
       kor[db].scaleY = newScale * this.gameVars.s_scale;
       kor[db].name = "kor";
+
+      keyImg[db] = this.keyPics[rand].clone();
+      keyImg[db].key = this.keys[rand];
+      keyImg[db].x = window.innerWidth / 6 * (db + 2)+(100*0.17);
+      keyImg[db].y = window.innerHeight / this.gameVars.s_keyPos * this.optScale;
+      keyImg[db].scaleX = newScale * this.gameVars.s_scale * 0.7;
+      keyImg[db].scaleY = newScale * this.gameVars.s_scale * 0.7;
+      keyImg[db].name = "keyPic";
 
 
       this.stage.addChildAt(kor[db], this.first + this.poz);
@@ -325,19 +407,24 @@ export class SecondGamePage implements OnInit {
       this.stage.addChildAt(forma[db], this.first + this.poz);
       this.stage.getChildAt(this.first + this.poz).visible = true;
       this.poz++;
+      
+      this.stage.addChildAt(keyImg[db], this.first + this.poz);
+      this.stage.getChildAt(this.first + this.poz).visible = true;
+      this.poz++;
     }
     this.stage.update();
     this.celpont = this.first + 1;
 
-    this.stage.getChildAt(this.celpont-1).scaleX = newScale * this.gameVars.s_scale * 1.2;
-    this.stage.getChildAt(this.celpont-1).scaleY = newScale * this.gameVars.s_scale * 1.2;
+    this.stage.getChildAt(this.celpont).scaleX = newScale * this.gameVars.s_scale * 1.2;
+    this.stage.getChildAt(this.celpont).scaleY = newScale * this.gameVars.s_scale * 1.2;
   }
 
   createForm() {
     let forma: any;
-    let rand = Math.floor(Math.random() * 6);
-
+    let keyImg: any;
     let kor = this.circle[0].clone();
+
+    let rand = Math.floor(Math.random() * 6);
 
     let newScale = window.innerWidth / this.startScreenWidth;
     if (newScale > window.innerWidth / this.gameVars.standardScreenWidth) newScale = window.innerWidth / this.gameVars.standardScreenWidth;
@@ -356,19 +443,31 @@ export class SecondGamePage implements OnInit {
     kor.scaleY = newScale * this.gameVars.s_scale;
     kor.name = "kor";
 
+    keyImg = this.keyPics[rand].clone();
+    keyImg.key = this.keys[rand];
+    keyImg.x = window.innerWidth+(100*0.17);
+    keyImg.y = window.innerHeight / this.gameVars.s_keyPos * this.optScale;
+    keyImg.scaleX = newScale * this.gameVars.s_scale * 0.7;
+    keyImg.scaleY = newScale * this.gameVars.s_scale * 0.7;
+    keyImg.name = "keyPic";
+
     this.stage.addChildAt(kor, this.first + this.poz - this.removedCount);
     this.stage.getChildAt(this.first + this.poz - this.removedCount).visible = false;
     this.poz++;
 
     this.stage.addChildAt(forma, this.first + this.poz - this.removedCount);
     this.stage.getChildAt(this.first + this.poz - this.removedCount).visible = true;
-
-    this.celpont = this.first + this.poz - this.removedCount - 10;
+    this.celpont = this.first + this.poz - this.removedCount - 12;
     this.poz++;
 
+    this.help ? this.stage.addChildAt(keyImg, this.first + this.poz - this.removedCount).visible=true : this.stage.addChildAt(keyImg, this.first + this.poz - this.removedCount).visible = false;
+    this.poz++;
+
+    
+    
     this.stage.getChildAt(this.celpont-1).scaleX = newScale * this.gameVars.s_scale * 1.2;
     this.stage.getChildAt(this.celpont-1).scaleY = newScale * this.gameVars.s_scale * 1.2;
-
+    
   }
 
   moveNumber() {
@@ -405,13 +504,11 @@ export class SecondGamePage implements OnInit {
     if (newScale > window.innerWidth / this.gameVars.standardScreenWidth) newScale = window.innerWidth / this.gameVars.standardScreenWidth;
 
     for (let i = this.first; i < this.stage.getNumChildren(); i++) {
-
-      if (this.stage.getChildAt(i).name == "forma" || this.stage.getChildAt(i).name == "kor") {
-        this.stage.getChildAt(i).x *= scale;
-        this.stage.getChildAt(i).y = screenHeigth / this.gameVars.s_formaPos * this.optScale;
-        this.stage.getChildAt(i).scaleX = newScale * this.gameVars.s_scale;
-        this.stage.getChildAt(i).scaleY = newScale * this.gameVars.s_scale;
-      }
+      this.stage.getChildAt(i).x *= scale;
+      this.stage.getChildAt(i).y = screenHeigth / this.gameVars.s_formaPos * this.optScale;
+      this.stage.getChildAt(i).scaleX = newScale * this.gameVars.s_scale;
+      this.stage.getChildAt(i).scaleY = newScale * this.gameVars.s_scale;
+      
     }
 
   }

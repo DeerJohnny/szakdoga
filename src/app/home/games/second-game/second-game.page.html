@@ -9,7 +9,12 @@
         </div>
         <div id="third" *ngIf="tutorialVisible3">
             <button id="backButton" mat-raised-button (click)="secondTut()">Vissza</button>
-            <button id="startGameButton" mat-raised-button (click)="loadGame()">Start</button>
+            <button id="nextButton" mat-raised-button (click)="memorize()">Következő</button>
+        </div>
+        <div *ngIf="memorizeVisible">
+            <p id="timer"><button id="backButton" mat-raised-button (click)="thirdTut()">Vissza</button>
+            <button id="startGameButton" mat-raised-button (click)="start()">Start</button></p>
+            <canvas id="gameCanvas" ></canvas>
         </div>
         <div id="game" >
             <p id="timer">{{timeLeftString}}</p>
