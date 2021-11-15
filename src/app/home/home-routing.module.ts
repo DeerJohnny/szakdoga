@@ -13,11 +13,11 @@ const routes: Routes = [
   },
   {
     path: 'second-game',
-    loadChildren: () => import('./games/second-game/second-game.module').then( m => m.SecondGamePageModule)
+    loadChildren: () => import('./games/second-game/second-game.module').then( m => m.SecondGPageModule)
   },
   {
     path: 'third-game',
-    loadChildren: () => import('./games/third-game/third-game.module').then( m => m.ThirdGamePageModule)
+    loadChildren: () => import('./games/third-game/third-game.module').then( m => m.ThirdGPageModule)
   },
   {
     path: 'first-test',

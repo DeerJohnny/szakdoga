@@ -1,6 +1,6 @@
 <ion-content color="primary" padding>
   <div class="menu">
-    <form #form="ngForm" (ngSubmit)="login(form)">
+    <form #form="ngForm" (ngSubmit)="login(form.value)">
         <p class="cim">Bejelentkezés</p>
         <ion-item>
           <ion-input name="email" type="email" placeholder="valami@email.com" ngModel required></ion-input>

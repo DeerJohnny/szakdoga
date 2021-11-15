@@ -15,10 +15,8 @@ export class LoginPage implements OnInit {
     console.log("LoginPage - OnInit")
   }
 
-  login(form){
-    if (this.authService.login(form.email, form.password)) {
-      this.router.navigateByUrl('home');
-    }
+  login(form: { email: string; password: string; }){
+    this.authService.login(form.email, form.password);
   }
 
   register() {

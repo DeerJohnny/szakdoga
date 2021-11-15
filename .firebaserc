@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "szakdolgozat-15c9e"
+  },
+  "targets": {
+    "szakdolgozat-15c9e": {
+      "hosting": {
+        "app": [
+          "szakdolgozat-15c9e"
+        ]
+      }
+    }
+  }
+}

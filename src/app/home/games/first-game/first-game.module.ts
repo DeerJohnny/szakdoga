@@ -12,8 +12,8 @@ import { CoggamesModule } from 'coggames';
 
 @NgModule({
   imports: [
-    CoggamesModule,
     CommonModule,
+    CoggamesModule,
     FormsModule,
     IonicModule,
     FirstGamePageRoutingModule

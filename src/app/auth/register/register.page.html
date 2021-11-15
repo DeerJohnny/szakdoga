@@ -1,6 +1,6 @@
 <ion-content  color="primary">
   <div class="menu">
-    <form  #form="ngForm" (ngSubmit)="register(form)">
+    <form  #form="ngForm" (ngSubmit)="register(form.value)">
       <p class="cim">Regisztráció</p>
       <ion-item>
         <ion-input  name="name" type="text" placeholder="név" ngModel required></ion-input>

@@ -7,9 +7,11 @@ import { IonicModule } from '@ionic/angular';
 import { SecondGamePageRoutingModule } from './second-game-routing.module';
 
 import { SecondGamePage } from './second-game.page';
+import { SecondGamePageModule } from 'coggames2';
 
 @NgModule({
   imports: [
+    SecondGamePageModule,
     CommonModule,
     FormsModule,
     IonicModule,
@@ -17,4 +19,4 @@ import { SecondGamePage } from './second-game.page';
   ],
   declarations: [SecondGamePage]
 })
-export class SecondGamePageModule {}
+export class SecondGPageModule {}
