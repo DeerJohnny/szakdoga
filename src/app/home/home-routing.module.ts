@@ -18,10 +18,6 @@ const routes: Routes = [
   {
     path: 'third-game',
     loadChildren: () => import('./games/third-game/third-game.module').then( m => m.ThirdGPageModule)
-  },
-  {
-    path: 'first-test',
-    loadChildren: () => import('./tests/first-test/first-test.module').then( m => m.FirstTestPageModule)
   }
 ];
 

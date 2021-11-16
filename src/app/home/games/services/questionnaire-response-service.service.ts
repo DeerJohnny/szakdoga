@@ -14,6 +14,7 @@ export class QuestionnaireResponseServiceService {
     qres.authored = new Date().toISOString();
     qres.item = score;
     this.afs.collection('gameResults').add(qres);
+    console.log("sikeres feltöltés:", qres);
   }
 
 }
