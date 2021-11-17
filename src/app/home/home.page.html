@@ -38,6 +38,22 @@
 
   </ion-card>
 
+  <ion-card class="stressScale">
+
+    <ion-card-content>
+      <ion-input type="number" min="0" max="10" placeholder="0-10" (ionChange)=stress($event.detail.value)>Stressz szint:</ion-input>
+    </ion-card-content>
+
+  </ion-card>
+
+  <ion-card class="tiredScale">
+
+    <ion-card-content>
+      <ion-input type="number" min="0" max="10" placeholder="0-10" (ionChange)=tired($event.detail.value)>Fáradtság szint:</ion-input>
+    </ion-card-content>
+
+  </ion-card>
+
   <ion-card class="logout">
 
     <ion-card-content>

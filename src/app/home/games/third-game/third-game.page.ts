@@ -16,7 +16,7 @@ export class ThirdGamePage implements OnInit {
   }
 
   async saveResult(result) {
-    this.service.uploadGameData(result, await this.storage.get('user'));
+    this.service.uploadGameData(result, await this.storage.get('user'), 'harmadik játék');
     this.router.navigate(['/home']);
   }
 }

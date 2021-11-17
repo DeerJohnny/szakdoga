@@ -16,7 +16,7 @@ export class SecondGamePage implements OnInit {
   }
 
   async saveResult(result) {
-    this.service.uploadGameData(result, await this.storage.get('user'));
+    this.service.uploadGameData(result, await this.storage.get('user'), 'második játék');
     this.router.navigate(['/home']);
   }
 

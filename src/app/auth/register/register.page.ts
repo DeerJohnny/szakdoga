@@ -14,8 +14,7 @@ export class RegisterPage implements OnInit {
   ngOnInit() {
   }
 
-  register(form){
-    console.log(form);
+  register(form: { email: string; password: string; name: string; }){
     this.authService.register(form.email, form.password, form.name);
     this.router.navigateByUrl('login');
     

@@ -9,18 +9,16 @@ import { ToastController } from '@ionic/angular';
 })
 export class AuthService {
 
-  constructor(private storage: Storage, private afs: AngularFirestore, private  router:  Router, public toastController: ToastController,) { }
+  constructor(private storage: Storage, private afs: AngularFirestore, private  router:  Router, public toastController: ToastController) { }
 
-  private users = [] as any;
   toast: any;
 
-  register(regemail, regpass, regname) {
+  register(regemail: string, regpass: string, regname: string) {
     const qres = {} as any;
     qres.authored = new Date().toISOString();
     qres.name = regname;
     qres.email = regemail;
     qres.password = regpass;
-    console.log(qres);
     this.afs.collection('users').add(qres);
   }
 
@@ -60,7 +58,6 @@ export class AuthService {
         if (doc.data()) {
           let user = doc.data();
           if (user.email === logemail && user.password === logpass) {
-            console.log(user);
             if (user.name) {
               this.storage.set('user', user.name);
             } else this.storage.set('user', 'vendég');
