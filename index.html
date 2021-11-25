@@ -6,21 +6,36 @@
     <title>Welcome to Firebase Hosting</title>
 
     <!-- update the version number as needed -->
-    <script defer src="/__/firebase/9.3.0/firebase-app-compat.js"></script>
+    <script defer src="/__/firebase/9.5.0/firebase-app-compat.js"></script>
     <!-- include only the Firebase features as you need -->
-    <script defer src="/__/firebase/9.3.0/firebase-auth-compat.js"></script>
-    <script defer src="/__/firebase/9.3.0/firebase-database-compat.js"></script>
-    <script defer src="/__/firebase/9.3.0/firebase-firestore-compat.js"></script>
-    <script defer src="/__/firebase/9.3.0/firebase-functions-compat.js"></script>
-    <script defer src="/__/firebase/9.3.0/firebase-messaging-compat.js"></script>
-    <script defer src="/__/firebase/9.3.0/firebase-storage-compat.js"></script>
-    <script defer src="/__/firebase/9.3.0/firebase-analytics-compat.js"></script>
-    <script defer src="/__/firebase/9.3.0/firebase-remote-config-compat.js"></script>
-    <script defer src="/__/firebase/9.3.0/firebase-performance-compat.js"></script>
-    <!-- 
-      initialize the SDK after all desired features are loaded, set useEmulator to false
-      to avoid connecting the SDK to running emulators.
-    -->
+    <script defer src="/__/firebase/9.5.0/firebase-auth-compat.js"></script>
+    <script defer src="/__/firebase/9.5.0/firebase-database-compat.js"></script>
+    <script defer src="/__/firebase/9.5.0/firebase-firestore-compat.js"></script>
+    <script defer src="/__/firebase/9.5.0/firebase-functions-compat.js"></script>
+    <script defer src="/__/firebase/9.5.0/firebase-messaging-compat.js"></script>
+    <script defer src="/__/firebase/9.5.0/firebase-storage-compat.js"></script>
+    <script defer src="/__/firebase/9.5.0/firebase-analytics-compat.js"></script>
+    <script defer src="/__/firebase/9.5.0/firebase-remote-config-compat.js"></script>
+    <script defer src="/__/firebase/9.5.0/firebase-performance-compat.js"></script>
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-app.js";
+      // TODO: Add SDKs for Firebase products that you want to use
+      // https://firebase.google.com/docs/web/setup#available-libraries
+    
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyB4TGJq3u_4gZ79hibXygB6PRqWwzjCcMI",
+        authDomain: "szakdolgozat-15c9e.firebaseapp.com",
+        projectId: "szakdolgozat-15c9e",
+        storageBucket: "szakdolgozat-15c9e.appspot.com",
+        messagingSenderId: "457989369263",
+        appId: "1:457989369263:web:cadcfe73d9ef18c142535a"
+      };
+    
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+    </script>
     <script defer src="/__/firebase/init.js?useEmulator=true"></script>
 
     <style media="screen">
