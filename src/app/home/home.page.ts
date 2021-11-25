@@ -41,11 +41,11 @@ export class HomePage implements OnInit{
     this.service.get(await this.storage.get("user"));
   }  
 
-  tired(value: number) {
-    this.storage.set("tired", value);
+  tired(event: any) {
+    this.storage.set("tired", event.detail.value);
   }
 
-  stress(value: number) {
-    this.storage.set("stress", value);
+  stress(event: any) {
+    this.storage.set("stress", event.detail.value);
   }
 }
