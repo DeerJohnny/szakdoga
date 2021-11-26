@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from  "@angular/router";
+import { Storage } from '@ionic/storage';
 import { AuthService } from '../auth.service';
 
 @Component({
@@ -9,7 +10,7 @@ import { AuthService } from '../auth.service';
 })
 export class LoginPage implements OnInit {
 
-  constructor(private  authService:  AuthService, private  router:  Router) { }
+  constructor(private storage: Storage, private  authService:  AuthService, private  router:  Router) { }
 
   ngOnInit() {
   }
@@ -23,6 +24,7 @@ export class LoginPage implements OnInit {
   }
 
   vendeg() {
+    this.storage.set("user", "vendég");
     this.router.navigateByUrl('home');
   }
 

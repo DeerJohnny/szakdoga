@@ -28,10 +28,12 @@
     "@firebase/firestore": "^3.2.1",
     "@ionic/angular": "^5.5.2",
     "@ionic/storage": "^3.0.6",
+    "bcryptjs": "^2.4.3",
     "coggames": "^0.0.45",
     "coggames2": "^0.0.3",
     "coggames3": "^0.0.1",
     "createjs-module": "^0.8.3",
+    "crypto-browserify": "^3.12.0",
     "firebase": "^9.3.0",
     "rxfire": "^6.0.0",
     "rxjs": "~6.6.0",
@@ -71,6 +73,9 @@
     "protractor": "~7.0.0",
     "ts-node": "~8.3.0",
     "typescript": "~4.2.4"
+  },
+  "browser": {
+    "crypto": false
   },
   "description": "An Ionic project"
 }
